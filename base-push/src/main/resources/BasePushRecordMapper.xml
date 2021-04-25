@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shawntime.base.push.dao.BasePushRecordMapper">
+
+    <select id="countRegionDealerOnlineTuanActivityPmoTask" resultType="java.lang.Integer">
+        select count(1)
+        from BasePushRecord record with (nolock)
+        inner join Activity a with (nolock)
+        on record.activityId = a.id and a.isDel = 0
+        inner join ActivityTravelCouponDealer atcd with (nolock)
+        on a.id = atcd.activityId and atcd.is_del = 0
+        where record.businessId = #{businessId}
+        and typeId = #{typeId}
+        and pushStatus = 2
+        and atcd.dealerInfoId = #{dealerInfoId}
+        and a.scrap = 0
+        and a.dealerId = 0
+    </select>
+
+    <select id="countDealerOnlineTuanActivityPmoTask" resultType="java.lang.Integer">
+        select count(1)
+        from BasePushRecord record with (nolock)
+        inner join Activity a with (nolock)
+        on record.activityId = a.id and a.isDel = 0
+        where record.businessId = #{businessId}
+        and typeId = #{typeId}
+        and pushStatus = 2
+        and a.dealerId = #{dealerInfoId}
+        and a.scrap = 0
+    </select>
+
+    <select id="getOnlineBasePushRecordList"
+            resultType="com.shawntime.base.push.entity.BasePushRecord">
+        SELECT
+            id,
+            businessId,
+            typeId,
+            subjectId,
+            cityId,
+            activityId,
+            brandId,
+            seriesId,
+            uniqueId,
+            requestBody,
+            responseBody,
+            PushStatus,
+            modified_stime AS modifiedStime,
+            returnUniqueId
+        FROM
+            BasePushRecord WITH(NOLOCK)
+        WHERE
+            businessId = #{businessId}
+        AND typeId = #{subBusinessId}
+        AND pushStatus in (1, 2, 4)
+        AND is_del = 0
+        <if test="needTimestamp == true">
+            And modified_stime > dateadd(dd, -35, getDate())
+        </if>
+    </select>
+
+    <update id="updatePushStatus">
+         UPDATE BasePushRecord SET pushStatus = #{pushStatus} WHERE id = #{id}
+    </update>
+</mapper>

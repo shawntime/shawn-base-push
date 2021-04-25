@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shawntime.base.push.dao.BasePushRequestLogMapper">
+    <select id="getBasePushRequestLogByReqId"
+            resultType="com.shawntime.base.push.entity.BasePushRequestLog">
+            SELECT
+                TOP 1
+                id,
+                basePushRecordId
+            FROM
+                BasePushRequestLog WITH (nolock)
+            WHERE
+                uuid = #{reqId}
+            AND is_del = 0
+            AND pushStatus = 1
+    </select>
+    <update id="updateCallBackResult">
+        UPDATE BasePushRequestLog SET
+        callBackResult = #{callBackResult},
+        pushStatus = #{pushStatus},
+        modified_stime = getDate()
+        WHERE id = #{id}
+    </update>
+
+    <select id="getDeleteIds" resultType="java.lang.Integer">
+        SELECT
+        TOP 1000
+        id
+        FROM (
+        SELECT
+        id,
+        basePushRecordId,
+        ROW_NUMBER () OVER (partition BY basePushRecordId ORDER BY id DESC) AS num
+        FROM
+        BasePushRequestLog WITH(NOLOCK)
+        WHERE is_del = 0
+        ) AS c
+        WHERE
+        num > 1
+    </select>
+
+    <delete id="batchDeleteLog">
+        DELETE
+        FROM
+        BasePushRequestLog
+        WHERE
+        id IN
+        <foreach collection="ids" separator="," close=")" open="(" item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

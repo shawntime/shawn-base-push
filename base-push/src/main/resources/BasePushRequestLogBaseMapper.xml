@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shawntime.base.push.dao.BasePushRequestLogMapper">
+    <resultMap id="BasePushRequestLogBaseMap"
+               type="com.shawntime.base.push.entity.BasePushRequestLog">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="basePushRecordId" property="basePushRecordId" jdbcType="INTEGER"/>
+        <result column="uuid" property="uuid" jdbcType="VARCHAR"/>
+        <result column="requestBody" property="requestBody" jdbcType="VARCHAR"/>
+        <result column="responseBody" property="responseBody" jdbcType="VARCHAR"/>
+        <result column="callBackResult" property="callBackResult" jdbcType="VARCHAR"/>
+        <result column="pushStatus" property="pushStatus" jdbcType="TINYINT"/>
+        <result column="created_stime" property="createdStime" jdbcType="TIMESTAMP"/>
+        <result column="modified_stime" property="modifiedStime" jdbcType="TIMESTAMP"/>
+        <result column="is_del" property="isDel" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="columnList">
+            id,
+            basePushRecordId,
+            uuid,
+            requestBody,
+            responseBody,
+            callBackResult,
+            pushStatus,
+            created_stime,
+            modified_stime,
+            is_del
+    </sql>
+
+    <sql id="commonColumnList">
+            id,
+            basePushRecordId,
+            uuid,
+            requestBody,
+            responseBody,
+            callBackResult,
+            pushStatus,
+            created_stime,
+            modified_stime,
+            is_del
+    </sql>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.shawntime.base.push.entity.BasePushRequestLog">
+        INSERT INTO
+        BasePushRequestLog
+        (
+        <trim suffixOverrides=",">
+            <if test="basePushRecordId != null">
+                basePushRecordId,
+            </if>
+            <if test="uuid != null">
+                uuid,
+            </if>
+            <if test="requestBody != null">
+                requestBody,
+            </if>
+            <if test="responseBody != null">
+                responseBody,
+            </if>
+            <if test="callBackResult != null">
+                callBackResult,
+            </if>
+            <if test="pushStatus != null">
+                pushStatus,
+            </if>
+            <if test="isDel != null">
+                is_del,
+            </if>
+            modified_stime,
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="basePushRecordId != null">
+                #{basePushRecordId},
+            </if>
+            <if test="uuid != null">
+                #{uuid},
+            </if>
+            <if test="requestBody != null">
+                #{requestBody},
+            </if>
+            <if test="responseBody != null">
+                #{responseBody},
+            </if>
+            <if test="callBackResult != null">
+                #{callBackResult},
+            </if>
+            <if test="pushStatus != null">
+                #{pushStatus},
+            </if>
+            <if test="isDel != null">
+                #{isDel},
+            </if>
+            getDate(),
+        </trim>
+        )
+    </insert>
+
+    <update id="update"
+            parameterType="com.shawntime.base.push.entity.BasePushRequestLog">
+        UPDATE
+        BasePushRequestLog
+        SET
+        <trim suffixOverrides=",">
+            basePushRecordId = #{basePushRecordId},
+            uuid = #{uuid},
+            requestBody = #{requestBody},
+            responseBody = #{responseBody},
+            callBackResult = #{callBackResult},
+            pushStatus = #{pushStatus},
+            is_del = #{isDel},
+            modified_stime = getDate(),
+        </trim>
+        WHERE
+        <trim prefixOverrides="AND">
+            AND id=#{id}
+        </trim>
+    </update>
+
+    <update id="updateSelective"
+            parameterType="com.shawntime.base.push.entity.BasePushRequestLog">
+        UPDATE
+        BasePushRequestLog
+        SET
+        <trim suffixOverrides=",">
+            <if test="basePushRecordId != null">
+                basePushRecordId = #{basePushRecordId},
+            </if>
+            <if test="uuid != null">
+                uuid = #{uuid},
+            </if>
+            <if test="requestBody != null">
+                requestBody = #{requestBody},
+            </if>
+            <if test="responseBody != null">
+                responseBody = #{responseBody},
+            </if>
+            <if test="callBackResult != null">
+                callBackResult = #{callBackResult},
+            </if>
+            <if test="pushStatus != null">
+                pushStatus = #{pushStatus},
+            </if>
+            <if test="isDel != null">
+                is_del = #{isDel},
+            </if>
+            <if test="modifiedStime != null">
+                modified_stime = #{modifiedStime},
+            </if>
+            modified_stime = getDate(),
+        </trim>
+        WHERE
+        <trim prefixOverrides="AND">
+            AND id=#{id}
+        </trim>
+    </update>
+
+    <delete id="remove">
+        DELETE
+        FROM BasePushRequestLog
+        WHERE
+        <trim prefixOverrides="AND">
+            AND id=#{id}
+        </trim>
+    </delete>
+
+    <select id="getById" resultMap="BasePushRequestLogBaseMap">
+        SELECT
+        <include refid="columnList"/>
+        FROM
+        BasePushRequestLog WITH(NOLOCK)
+        WHERE
+        <trim prefixOverrides="AND">
+            AND id=#{id}
+        </trim>
+    </select>
+
+    <select id="getByIds" resultMap="BasePushRequestLogBaseMap">
+        SELECT
+        <include refid="commonColumnList"/>
+        FROM
+        BasePushRequestLog WITH(NOLOCK)
+        WHERE
+        id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

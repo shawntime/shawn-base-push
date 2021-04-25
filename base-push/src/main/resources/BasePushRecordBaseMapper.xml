@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shawntime.base.push.dao.BasePushRecordMapper">
+    <resultMap id="BasePushRecordBaseMap"
+               type="com.shawntime.base.push.entity.BasePushRecord">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="businessId" property="businessId" jdbcType="INTEGER"/>
+        <result column="typeId" property="typeId" jdbcType="INTEGER"/>
+        <result column="subjectId" property="subjectId" jdbcType="INTEGER"/>
+        <result column="cityId" property="cityId" jdbcType="INTEGER"/>
+        <result column="activityId" property="activityId" jdbcType="INTEGER"/>
+        <result column="brandId" property="brandId" jdbcType="INTEGER"/>
+        <result column="seriesId" property="seriesId" jdbcType="INTEGER"/>
+        <result column="uniqueId" property="uniqueId" jdbcType="VARCHAR"/>
+        <result column="requestBody" property="requestBody" jdbcType="VARCHAR"/>
+        <result column="responseBody" property="responseBody" jdbcType="VARCHAR"/>
+        <result column="pushStatus" property="pushStatus" jdbcType="TINYINT"/>
+        <result column="created_stime" property="createdStime" jdbcType="TIMESTAMP"/>
+        <result column="modified_stime" property="modifiedStime" jdbcType="TIMESTAMP"/>
+        <result column="is_del" property="isDel" jdbcType="INTEGER"/>
+        <result column="returnUniqueId" property="returnUniqueId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="columnList">
+            id,
+            businessId,
+            typeId,
+            subjectId,
+            cityId,
+            activityId,
+            brandId,
+            seriesId,
+            uniqueId,
+            requestBody,
+            responseBody,
+            pushStatus,
+            created_stime,
+            modified_stime,
+            is_del,
+            returnUniqueId
+    </sql>
+
+    <sql id="commonColumnList">
+            id,
+            businessId,
+            typeId,
+            subjectId,
+            cityId,
+            activityId,
+            brandId,
+            seriesId,
+            uniqueId,
+            requestBody,
+            responseBody,
+            pushStatus,
+            created_stime,
+            modified_stime,
+            is_del,
+            returnUniqueId
+    </sql>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.shawntime.base.push.entity.BasePushRecord">
+        INSERT INTO
+        BasePushRecord
+        (
+        <trim suffixOverrides=",">
+            <if test="businessId != null">
+                businessId,
+            </if>
+            <if test="typeId != null">
+                typeId,
+            </if>
+            <if test="subjectId != null">
+                subjectId,
+            </if>
+            <if test="cityId != null">
+                cityId,
+            </if>
+            <if test="activityId != null">
+                activityId,
+            </if>
+            <if test="brandId != null">
+                brandId,
+            </if>
+            <if test="seriesId != null">
+                seriesId,
+            </if>
+            <if test="uniqueId != null">
+                uniqueId,
+            </if>
+            <if test="requestBody != null">
+                requestBody,
+            </if>
+            <if test="responseBody != null">
+                responseBody,
+            </if>
+            <if test="pushStatus != null">
+                pushStatus,
+            </if>
+            <if test="isDel != null">
+                is_del,
+            </if>
+            <if test="returnUniqueId != null">
+                returnUniqueId,
+            </if>
+            modified_stime,
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="businessId != null">
+                #{businessId},
+            </if>
+            <if test="typeId != null">
+                #{typeId},
+            </if>
+            <if test="subjectId != null">
+                #{subjectId},
+            </if>
+            <if test="cityId != null">
+                #{cityId},
+            </if>
+            <if test="activityId != null">
+                #{activityId},
+            </if>
+            <if test="brandId != null">
+                #{brandId},
+            </if>
+            <if test="seriesId != null">
+                #{seriesId},
+            </if>
+            <if test="uniqueId != null">
+                #{uniqueId},
+            </if>
+            <if test="requestBody != null">
+                #{requestBody},
+            </if>
+            <if test="responseBody != null">
+                #{responseBody},
+            </if>
+            <if test="pushStatus != null">
+                #{pushStatus},
+            </if>
+            <if test="isDel != null">
+                #{isDel},
+            </if>
+            <if test="returnUniqueId != null">
+                #{returnUniqueId},
+            </if>
+            getDate(),
+        </trim>
+        )
+    </insert>
+
+    <update id="update"
+            parameterType="com.shawntime.base.push.entity.BasePushRecord">
+        UPDATE
+        BasePushRecord
+        SET
+        <trim suffixOverrides=",">
+            businessId = #{businessId},
+            typeId = #{typeId},
+            subjectId = #{subjectId},
+            cityId = #{cityId},
+            activityId = #{activityId},
+            brandId = #{brandId},
+            seriesId = #{seriesId},
+            uniqueId = #{uniqueId},
+            requestBody = #{requestBody},
+            responseBody = #{responseBody},
+            pushStatus = #{pushStatus},
+            is_del = #{isDel},
+            returnUniqueId = #{returnUniqueId},
+            modified_stime = getDate(),
+        </trim>
+        WHERE
+        <trim prefixOverrides="AND">
+            AND id=#{id}
+        </trim>
+    </update>
+
+    <update id="updateSelective"
+            parameterType="com.shawntime.base.push.entity.BasePushRecord">
+        UPDATE
+        BasePushRecord
+        SET
+        <trim suffixOverrides=",">
+            <if test="businessId != null">
+                businessId = #{businessId},
+            </if>
+            <if test="typeId != null">
+                typeId = #{typeId},
+            </if>
+            <if test="subjectId != null">
+                subjectId = #{subjectId},
+            </if>
+            <if test="cityId != null">
+                cityId = #{cityId},
+            </if>
+            <if test="activityId != null">
+                activityId = #{activityId},
+            </if>
+            <if test="brandId != null">
+                brandId = #{brandId},
+            </if>
+            <if test="seriesId != null">
+                seriesId = #{seriesId},
+            </if>
+            <if test="uniqueId != null">
+                uniqueId = #{uniqueId},
+            </if>
+            <if test="requestBody != null">
+                requestBody = #{requestBody},
+            </if>
+            <if test="responseBody != null">
+                responseBody = #{responseBody},
+            </if>
+            <if test="pushStatus != null">
+                pushStatus = #{pushStatus},
+            </if>
+            <if test="isDel != null">
+                is_del = #{isDel},
+            </if>
+            <if test="returnUniqueId != null">
+                returnUniqueId = #{returnUniqueId},
+            </if>
+            <if test="modifiedStime != null">
+                modified_stime = #{modifiedStime},
+            </if>
+            modified_stime = getDate(),
+        </trim>
+        WHERE
+        <trim prefixOverrides="AND">
+            AND id=#{id}
+        </trim>
+    </update>
+
+    <delete id="remove">
+        DELETE
+        FROM BasePushRecord
+        WHERE
+        <trim prefixOverrides="AND">
+            AND id=#{id}
+        </trim>
+    </delete>
+
+    <select id="getById" resultMap="BasePushRecordBaseMap">
+        SELECT
+        <include refid="columnList"/>
+        FROM
+        BasePushRecord WITH(NOLOCK)
+        WHERE
+        <trim prefixOverrides="AND">
+            AND id=#{id}
+        </trim>
+    </select>
+
+    <select id="getByIds" resultMap="BasePushRecordBaseMap">
+        SELECT
+        <include refid="commonColumnList"/>
+        FROM
+        BasePushRecord WITH(NOLOCK)
+        WHERE
+        id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>
